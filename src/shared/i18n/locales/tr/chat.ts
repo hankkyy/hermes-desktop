@@ -27,6 +27,8 @@ export default {
   newChat: "Yeni sohbet (Cmd+N)",
   clearChat: "Sohbeti temizle",
   clearChatConfirm: "Bu konuşma temizlensin mi? Bu işlem geri alınamaz.",
+  codeShowMore: "Daha fazla göster",
+  codeShowLess: "Daha az göster",
   setContextFolder: "Bağlam klasörü belirle",
   contextFolderChip: "Klasör Seç",
   contextFolderActive: "Bağlam klasörü: {{path}}",

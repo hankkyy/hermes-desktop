@@ -23,6 +23,8 @@ export default {
   deny: "Tolak",
   newChat: "Chat baru (Cmd+N)",
   clearChat: "Bersihkan chat",
+  codeShowMore: "Tampilkan lainnya",
+  codeShowLess: "Tampilkan lebih sedikit",
   setContextFolder: "Atur folder konteks",
   contextFolderActive: "Folder konteks: {{path}}",
   removeContextFolder: "Hapus folder konteks",

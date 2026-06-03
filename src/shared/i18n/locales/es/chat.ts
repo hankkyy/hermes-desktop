@@ -28,6 +28,8 @@ export default {
   newChat: "Nuevo chat (Cmd+N)",
   clearChat: "Borrar chat",
   clearChatConfirm: "¿Borrar esta conversación? Esta acción no se puede deshacer.",
+  codeShowMore: "Mostrar más",
+  codeShowLess: "Mostrar menos",
   setContextFolder: "Establecer carpeta de contexto",
   contextFolderChip: "Elegir carpeta",
   contextFolderActive: "Carpeta de contexto: {{path}}",

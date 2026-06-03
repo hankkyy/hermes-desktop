@@ -2133,6 +2133,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   padding: 4px 12px;
   background: var(--code-bg);
 }
@@ -2142,6 +2143,13 @@ body {
   color: var(--text-muted);
   font-weight: 600;
   text-transform: lowercase;
+}
+
+.chat-code-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .chat-code-copy {
@@ -2158,8 +2166,58 @@ body {
   transition: color var(--transition);
 }
 
-.chat-code-copy:hover {
+.chat-code-toggle {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 3px 7px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition);
+}
+
+.chat-code-copy:hover,
+.chat-code-toggle:hover {
   color: var(--text-primary);
+}
+
+.chat-code-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.chat-code-content {
+  position: relative;
+  overflow: auto;
+}
+
+.chat-code-block--collapsed .chat-code-content {
+  max-height: 320px;
+  overflow: hidden;
+}
+
+.chat-code-block--collapsible:not(.chat-code-block--collapsed)
+  .chat-code-content {
+  max-height: min(48vh, 520px);
+  overflow: auto;
+}
+
+.chat-code-fade {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 48px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(40, 44, 52, 0), var(--code-bg));
 }
 
 .chat-code-block + * {
@@ -3184,6 +3242,7 @@ body {
 }
 
 .chat-tool-progress {
+  position: relative;
   font-size: 13px;
   color: var(--text-secondary);
   animation: fadeIn 0.2s ease;
@@ -3192,8 +3251,66 @@ body {
 .chat-tool-progress-inline {
   font-size: 12px;
   color: var(--text-muted);
-  padding: 2px 60px;
+  margin: 2px 60px;
   animation: fadeIn 0.2s ease;
+}
+
+.chat-tool-progress-live {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: fit-content;
+  max-width: min(100%, 980px);
+  max-height: 34px;
+  overflow: hidden;
+  padding: 6px 10px 6px 8px;
+  border: 1px solid var(--border, rgba(127, 127, 127, 0.18));
+  border-radius: 8px;
+  background: var(--bg-secondary);
+}
+
+.chat-tool-progress-live--expanded {
+  width: min(100%, 980px);
+  max-height: min(42vh, 480px);
+  overflow: auto;
+}
+
+.chat-tool-progress-content {
+  min-width: 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.chat-tool-progress-live:not(.chat-tool-progress-live--expanded)
+  .chat-tool-progress-content {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-tool-progress-toggle {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background var(--transition),
+    color var(--transition);
+}
+
+.chat-tool-progress-toggle:hover {
+  background: rgba(127, 127, 127, 0.1);
+  color: var(--text-primary);
 }
 
 /* ── Chat history sub-rows (reasoning / tool_call / tool_result) ───────

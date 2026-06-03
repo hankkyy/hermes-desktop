@@ -1,6 +1,8 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { HermesAvatar, MessageRow } from "./MessageRow";
 import { ReasoningRow, ToolCallRow, ToolResultRow } from "./HistoryRow";
+import { useI18n } from "../../components/useI18n";
 import type { ChatMessage } from "./types";
 
 interface MessageListProps {
@@ -21,7 +23,7 @@ function TypingIndicator({
       <HermesAvatar />
       <div className="chat-bubble chat-bubble-agent">
         {toolProgress ? (
-          <div className="chat-tool-progress">{toolProgress}</div>
+          <LiveToolProgress text={toolProgress} className="chat-tool-progress" />
         ) : (
           <div className="chat-typing">
             <span className="chat-typing-dot" />
@@ -30,6 +32,36 @@ function TypingIndicator({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function LiveToolProgress({
+  text,
+  className,
+}: {
+  text: string;
+  className: string;
+}): React.JSX.Element {
+  const { t } = useI18n();
+  const [expanded, setExpanded] = useState(false);
+  const toggleLabel = expanded ? t("chat.codeShowLess") : t("chat.codeShowMore");
+  return (
+    <div
+      className={`${className} chat-tool-progress-live${
+        expanded ? " chat-tool-progress-live--expanded" : ""
+      }`}
+    >
+      <button
+        type="button"
+        className="chat-tool-progress-toggle"
+        aria-label={toggleLabel}
+        title={toggleLabel}
+        onClick={() => setExpanded((value) => !value)}
+      >
+        {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+      </button>
+      <div className="chat-tool-progress-content">{text}</div>
     </div>
   );
 }
@@ -126,7 +158,10 @@ export const MessageList = memo(function MessageList({
       )}
 
       {isLoading && toolProgress && lastMessageIsAgent && (
-        <div className="chat-tool-progress-inline">{toolProgress}</div>
+        <LiveToolProgress
+          text={toolProgress}
+          className="chat-tool-progress-inline"
+        />
       )}
     </>
   );

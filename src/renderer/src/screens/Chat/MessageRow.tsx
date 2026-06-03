@@ -102,6 +102,8 @@ export const MessageRow = memo(function MessageRow({
     isLast &&
     APPROVAL_RE.test(msg.content);
   const hasAttachments = !!msg.attachments && msg.attachments.length > 0;
+  const shouldCollapseStreamingCodeBlocks =
+    msg.role === "agent" && isLoading && isLast;
 
   return (
     <div
@@ -138,7 +140,10 @@ export const MessageRow = memo(function MessageRow({
                     // every subsequent index, which would otherwise re-mount
                     // each downstream MediaSegmentView and re-fire its
                     // `mediaFileExists` probe.
-                    <AgentMarkdown key={`t-${segment.start}`}>
+                    <AgentMarkdown
+                      key={`t-${segment.start}`}
+                      collapseCodeBlocks={shouldCollapseStreamingCodeBlocks}
+                    >
                       {segment.value}
                     </AgentMarkdown>
                   ) : null

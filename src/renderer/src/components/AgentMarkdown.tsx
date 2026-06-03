@@ -1,7 +1,7 @@
 import { useState, useEffect, memo } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Copy } from "lucide-react";
+import { ChevronDown, ChevronUp, Copy } from "lucide-react";
 import { useI18n } from "./useI18n";
 import { MediaImage, DownloadChip } from "./MediaImage";
 import { describeImageSrc } from "../screens/Chat/mediaUtils";
@@ -44,13 +44,26 @@ function DiffView({ code }: { code: string }): React.JSX.Element {
   );
 }
 
+const CODE_BLOCK_COLLAPSE_LINE_THRESHOLD = 16;
+const CODE_BLOCK_LONG_LINE_LENGTH = 240;
+
+function shouldCollapseCodeBlock(code: string): boolean {
+  const lines = code.split("\n");
+  return (
+    lines.length > CODE_BLOCK_COLLAPSE_LINE_THRESHOLD ||
+    lines.some((line) => line.length > CODE_BLOCK_LONG_LINE_LENGTH)
+  );
+}
+
 // Code block with syntax highlighting and copy button (lazy-loaded highlighter)
 function CodeBlock({
   className,
   children,
+  collapseLongBlocks,
 }: {
   className?: string;
   children?: React.ReactNode;
+  collapseLongBlocks?: boolean;
 }): React.JSX.Element {
   const { t } = useI18n();
   const [copied, setCopied] = useState(false);
@@ -61,6 +74,9 @@ function CodeBlock({
   const match = /language-(\w+)/.exec(className || "");
   const language = match ? match[1] : "";
   const isDiff = language === "diff";
+  const canCollapse = collapseLongBlocks && shouldCollapseCodeBlock(code);
+  const [expanded, setExpanded] = useState(false);
+  const isCollapsed = canCollapse && !expanded;
 
   // Trigger lazy load when code block mounts
   useEffect(() => {
@@ -92,35 +108,63 @@ function CodeBlock({
   );
 
   return (
-    <div className="chat-code-block">
+    <div
+      className={`chat-code-block${
+        canCollapse ? " chat-code-block--collapsible" : ""
+      }${isCollapsed ? " chat-code-block--collapsed" : ""}`}
+    >
       <div className="chat-code-header">
         <span className="chat-code-lang">
           {isDiff ? "diff" : language || "code"}
         </span>
-        <button className="chat-code-copy" onClick={handleCopy}>
-          {copied ? t("common.copied") : <Copy size={13} />}
-        </button>
+        <div className="chat-code-actions">
+          {canCollapse && (
+            <button
+              type="button"
+              className="chat-code-toggle"
+              onClick={() => setExpanded((value) => !value)}
+            >
+              {expanded ? (
+                <>
+                  <ChevronUp size={13} />
+                  {t("chat.codeShowLess")}
+                </>
+              ) : (
+                <>
+                  <ChevronDown size={13} />
+                  {t("chat.codeShowMore")}
+                </>
+              )}
+            </button>
+          )}
+          <button type="button" className="chat-code-copy" onClick={handleCopy}>
+            {copied ? t("common.copied") : <Copy size={13} />}
+          </button>
+        </div>
       </div>
-      {isDiff ? (
-        <DiffView code={code} />
-      ) : highlighterReady && _highlighterMod && _oneDark ? (
-        <_highlighterMod.Prism
-          style={_oneDark}
-          language={language || "text"}
-          PreTag="div"
-          customStyle={{
-            margin: 0,
-            borderRadius: 0,
-            fontSize: "13px",
-            padding: "12px",
-            background: "transparent",
-          }}
-        >
-          {code}
-        </_highlighterMod.Prism>
-      ) : (
-        fallbackPre
-      )}
+      <div className="chat-code-content">
+        {isDiff ? (
+          <DiffView code={code} />
+        ) : highlighterReady && _highlighterMod && _oneDark ? (
+          <_highlighterMod.Prism
+            style={_oneDark}
+            language={language || "text"}
+            PreTag="div"
+            customStyle={{
+              margin: 0,
+              borderRadius: 0,
+              fontSize: "13px",
+              padding: "12px",
+              background: "transparent",
+            }}
+          >
+            {code}
+          </_highlighterMod.Prism>
+        ) : (
+          fallbackPre
+        )}
+        {isCollapsed && <div className="chat-code-fade" aria-hidden="true" />}
+      </div>
     </div>
   );
 }
@@ -128,8 +172,10 @@ function CodeBlock({
 // Shared Markdown renderer that opens links externally
 const AgentMarkdown = memo(function AgentMarkdown({
   children,
+  collapseCodeBlocks = false,
 }: {
   children: string;
+  collapseCodeBlocks?: boolean;
 }): React.JSX.Element {
   return (
     <Markdown
@@ -179,7 +225,14 @@ const AgentMarkdown = memo(function AgentMarkdown({
               </code>
             );
           }
-          return <CodeBlock className={className}>{children}</CodeBlock>;
+          return (
+            <CodeBlock
+              className={className}
+              collapseLongBlocks={collapseCodeBlocks}
+            >
+              {children}
+            </CodeBlock>
+          );
         },
       }}
     >

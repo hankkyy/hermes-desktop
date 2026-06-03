@@ -23,6 +23,8 @@ export default {
   deny: "Negar",
   newChat: "Novo chat (Cmd+N)",
   clearChat: "Limpar chat",
+  codeShowMore: "Mostrar mais",
+  codeShowLess: "Mostrar menos",
   setContextFolder: "Definir pasta de contexto",
   contextFolderActive: "Pasta de contexto: {{path}}",
   removeContextFolder: "Remover pasta de contexto",

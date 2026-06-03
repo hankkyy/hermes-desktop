@@ -21,6 +21,8 @@ export default {
   deny: "拒絕",
   newChat: "新聊天 (Cmd+N)",
   clearChat: "清除聊天",
+  codeShowMore: "顯示更多",
+  codeShowLess: "收合",
   setContextFolder: "設定上下文資料夾",
   contextFolderActive: "上下文資料夾：{{path}}",
   removeContextFolder: "移除上下文資料夾",

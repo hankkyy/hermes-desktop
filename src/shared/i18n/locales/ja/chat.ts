@@ -21,6 +21,8 @@ export default {
   deny: "拒否",
   newChat: "新規チャット (Cmd+N)",
   clearChat: "チャットをクリア",
+  codeShowMore: "もっと表示",
+  codeShowLess: "折りたたむ",
   setContextFolder: "コンテキストフォルダを設定",
   contextFolderActive: "コンテキストフォルダ: {{path}}",
   removeContextFolder: "コンテキストフォルダを削除",

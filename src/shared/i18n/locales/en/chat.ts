@@ -27,6 +27,8 @@ export default {
   newChat: "New chat (Cmd+N)",
   clearChat: "Clear chat",
   clearChatConfirm: "Clear this conversation? This cannot be undone.",
+  codeShowMore: "Show more",
+  codeShowLess: "Show less",
   setContextFolder: "Set context folder",
   contextFolderChip: "Choose Folder",
   contextFolderActive: "Context folder: {{path}}",

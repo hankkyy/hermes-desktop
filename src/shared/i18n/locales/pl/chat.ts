@@ -27,6 +27,8 @@ export default {
   newChat: "Nowy czat (Cmd+N)",
   clearChat: "Wyczyść czat",
   clearChatConfirm: "Wyczyścić tę rozmowę? Tego nie da się cofnąć.",
+  codeShowMore: "Pokaż więcej",
+  codeShowLess: "Pokaż mniej",
   setContextFolder: "Ustaw folder kontekstu",
   contextFolderActive: "Folder kontekstu: {{path}}",
   removeContextFolder: "Usuń folder kontekstu",
