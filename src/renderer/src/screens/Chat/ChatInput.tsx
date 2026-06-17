@@ -352,7 +352,8 @@ export const ChatInput = forwardRef<ChatInputHandle, ChatInputProps>(
         }
       }
 
-      if (e.key === "Enter" && !e.shiftKey) {
+      // Send: plain Enter (without Shift) or Ctrl/Cmd+Enter
+      if (e.key === "Enter" && (!e.shiftKey || e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         handleSend();
       }
