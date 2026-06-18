@@ -257,6 +257,7 @@ function Chat({
   useChatIPC({
     runId,
     sessionScopeId: visibleSessionScopeId,
+    enabled: !dashboardChatEnabled,
     setMessages,
     setHermesSessionId,
     setToolProgress,
