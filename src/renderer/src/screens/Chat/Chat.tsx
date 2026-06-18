@@ -532,6 +532,7 @@ function Chat({
         used: usage.contextTokens,
         window:
           realContextWindow ?? contextWindowForModel(modelConfig.currentModel),
+        promptTokens: usage.promptTokens,
         cacheReadTokens: usage.cacheReadTokens,
         cacheWriteTokens: usage.cacheWriteTokens,
       }
